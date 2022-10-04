@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.482d6994.css","mappings":"AAAA,KACE,sBAAuB,CACvB,iBACF,CAEA,KAGE,kBAAmB,CAFnB,YAAa,CAGb,UAAW,CAFX,SAGF","sources":["styles.css"],"sourcesContent":[".App {\n  font-family: sans-serif;\n  text-align: center;\n}\n\n#map {\n  height: 650px;\n  width: 50%;\n  border-radius: 10px;\n  margin: 5px;\n}\n"],"names":[],"sourceRoot":""}
