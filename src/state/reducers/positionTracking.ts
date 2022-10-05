@@ -14,6 +14,8 @@ class PositionTrackingState {
   is_watching: boolean;
   data: any;
   current_position: any;
+  latitude: number;
+  longitude: number;
 
   constructor() {
     this.initialized = false;
