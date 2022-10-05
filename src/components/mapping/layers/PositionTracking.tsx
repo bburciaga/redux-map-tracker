@@ -36,7 +36,7 @@ export default function PositionTracking() {
   });
 
   return <>
-    {current_position && <Marker position={[current_position.toFixed(5), current_position.toFixed(5)]} />}
+    {current_position && <Marker position={[current_position[0].toFixed(5), current_position[1].toFixed(5)]} />}
   </>;
 
 }
