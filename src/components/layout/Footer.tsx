@@ -37,8 +37,9 @@ export default function Footer () {
         }}>
         <BuildIcon />
       </IconButton>
+      {positionTracking.is_watching ? <>Is watching </> : <>Is not watching</>}
       {positionTracking.current_position && <Typography>
-        Position: {positionTracking.current_position.toString(' ')}
+        {positionTracking.current_position.toString(' ')}
       </Typography>}
     </div>
   )
