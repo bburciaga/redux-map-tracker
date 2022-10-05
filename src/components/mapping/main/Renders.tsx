@@ -7,6 +7,7 @@ import {
   USER_BOUND_UPDATE_ON_MOVE,
   USER_BOUND_UPDATE_ON_ZOOM,
 } from "../../../state/actions/index";
+import { selectPositionTracking } from "../../../state/reducers/positionTracking";
 import { selectUserBound } from "../../../state/reducers/userBound";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
