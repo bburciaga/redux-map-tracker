@@ -11,16 +11,20 @@ export default function Maps () {
   return (
     <div
       style={{ display: "flex", flexFlow: "nowrap row-reverse"}}>
-      {userSettings.proof 
-        ? <div style={{ width: '50%'}}>
-            <Header title={'Proof'} />
-            <ProofMap />
-          </div>
-        : <div style={{ width: userSettings.proof ? '50%' : '100%'}}>
-            <Header title={'main'} />
-            <MainMap />
-          </div>
+      <div style={{ width: '100%'}}>
+        {userSettings.proof 
+          ? 
+            <>
+              <Header title={'Proof'} />
+              <ProofMap />
+            </>
+          : 
+            <>
+              <Header title={'main'} />
+              <MainMap />
+            </>
         }
+      </div>
     </div>
   );
 }

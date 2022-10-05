@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Geolocation } from "@capacitor/geolocation";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectPositionTracking } from "../../../state/reducers/positionTracking";
 import { POSITION_TRACKING_UPDATE_FAIL, POSITION_TRACKING_UPDATE_REQUEST } from "../../../state/actions";
 
