@@ -19,7 +19,7 @@ const InfoBox = ({ count, proof = false }: IInfoBoxProps) => {
         zIndex: 1500,
         backgroundColor: "white",
         width: 220,
-        height: 150,
+        minHeight: 150,
         borderRadius: 10,
         margin: 5,
         position: "absolute",

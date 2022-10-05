@@ -24,7 +24,7 @@ export default function Footer () {
   }
 
   return (
-    <div style={{ display: 'flex', flexFlow: 'nowrap row' }}>
+    <div style={{ display: 'flex', flexFlow: 'nowrap row', justifyContent: 'center' }}>
       <IconButton
         sx={{ width: 40, height: 40, borderRadius: 0}}
         onClick={() => {
