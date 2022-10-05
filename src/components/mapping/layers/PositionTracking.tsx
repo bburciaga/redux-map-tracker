@@ -16,7 +16,7 @@ export default function PositionTracking() {
       dispatch({
         type: POSITION_TRACKING_UPDATE_REQUEST,
         payload: {
-          position: [position.coords.latitude, position.coords.longitude]
+          position: [position.coords.latitude.toFixed(6), position.coords.longitude.toFixed(6)]
         }
       });
     } catch (error: any) {
