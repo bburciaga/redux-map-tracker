@@ -16,7 +16,7 @@ export default function PositionTracking() {
       dispatch({
         type: POSITION_TRACKING_UPDATE_REQUEST,
         payload: {
-          position: [position.coords.latitude.toFixed(6), position.coords.longitude.toFixed(6)]
+          position: [position.coords.latitude.toFixed(7), position.coords.longitude.toFixed(7)]
         }
       });
     } catch (error: any) {
@@ -36,7 +36,7 @@ export default function PositionTracking() {
   });
 
   return <>
-    {current_position && <Marker position={current_position} />}
+    {current_position && <Marker position={[current_position.latitude.toFixed(5), current_position.longitude.toFixed(5)]} />}
   </>;
 
 }
