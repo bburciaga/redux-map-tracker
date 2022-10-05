@@ -1,17 +1,16 @@
 import React from "react";
-import { GeoJSON, useMap, useMapEvent } from "react-leaflet";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useMap, useMapEvent } from "react-leaflet";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserGeo } from "../../../helpers/geometry";
 import {
   USER_BOUND_INITIALIZE,
   USER_BOUND_UPDATE_ON_MOVE,
   USER_BOUND_UPDATE_ON_ZOOM,
-} from "../../../state/actions";
+} from "../../../state/actions/index";
 import { selectUserBound } from "../../../state/reducers/userBound";
-import BufferedExtents from "../BufferedExtents";
-import CachedData from "../CachedData";
-import InfoBox from "./InfoBox";
+import BufferedExtents from "../layers/BufferedExtents";
+import CachedData from "../layers/CachedData";
+import InfoBox from "../tools/InfoBox";
 
 export const Renders = () => {
   const dispatch = useDispatch();
@@ -64,10 +63,15 @@ export const Renders = () => {
   });
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+      }}
+    >
       <BufferedExtents />
       <CachedData />
-      <InfoBox count={countRef.current} />
-    </>
+      {/* <InfoBox count={countRef.current} /> */}
+    </div>
   );
 };

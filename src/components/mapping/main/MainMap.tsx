@@ -1,4 +1,5 @@
 import { MapContainer, TileLayer } from "react-leaflet";
+import Toolbar from "../tools/Toolbar";
 import { Renders } from "./Renders";
 
 export const MainMap = () => {
@@ -16,6 +17,7 @@ export const MainMap = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Renders />
+        <Toolbar />
       </MapContainer>
     </>
   );

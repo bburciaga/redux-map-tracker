@@ -1,14 +1,14 @@
 import intersect from "@turf/intersect";
 import { GeoJSON, useMap, useMapEvent } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
-import { createUserGeo } from "../../helpers/geometry";
+import { createUserGeo } from "../../../helpers/geometry";
 import {
   BUFFERED_EXTENTS_UPDATE_ON_NO_INTERSECTIONS_REQUEST,
   BUFFERED_EXTENTS_UPDATE_ON_ONE_INTERSECTIONS_REQUEST,
   BUFFERED_EXTENTS_UPDATE_ON_THREE_INTERSECTIONS_REQUEST,
   BUFFERED_EXTENTS_UPDATE_ON_TWO_INTERSECTIONS_REQUEST,
-} from "../../state/actions";
-import { selectBufferedExtents } from "../../state/reducers/bufferedExtents";
+} from "../../../state/actions";
+import { selectBufferedExtents } from "../../../state/reducers/bufferedExtents";
 
 interface IBufferedExtentsComponentProps {
   proof?: boolean;

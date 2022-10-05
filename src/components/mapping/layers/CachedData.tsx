@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectCachedData } from "../../state/reducers/cachedData";
+import { selectCachedData } from "../../../state/reducers/cachedData";
 import { GeoJSON } from "react-leaflet";
 
 const CachedData = () => {
