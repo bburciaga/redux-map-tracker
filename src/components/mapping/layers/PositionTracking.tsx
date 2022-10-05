@@ -8,6 +8,10 @@ export default function PositionTracking() {
   const dispatch = useDispatch();
   const { is_watching, current_position } = useSelector(selectPositionTracking);
 
+  useEffect(() => {
+    console.log(current_position);
+  }, [current_position]);
+
   const findMe = async () => {
     try {
       const position = await Geolocation.getCurrentPosition().then((pos: any) => {
@@ -17,8 +21,8 @@ export default function PositionTracking() {
         type: POSITION_TRACKING_UPDATE_REQUEST,
         payload: {
           position: {
-            lat: position.coords.latitude.toFixed(7),
-            lng: position.coords.longitude.toFixed(7)
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
           }
         }
       });
@@ -39,7 +43,10 @@ export default function PositionTracking() {
   });
 
   return <>
-    {current_position && <Marker position={current_position} />}
+    {current_position && <Marker position={{
+      lat: current_position.lat.toFixed(5),
+      lng: current_position.lng.toFixed(5)
+    }} />}
   </>;
 
 }
