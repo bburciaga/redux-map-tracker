@@ -1,6 +1,6 @@
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
+import LocationDisabledIcon from '@mui/icons-material/LocationDisabled';
+import { useDispatch, useSelector } from "react-redux";
 import {
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
@@ -34,7 +34,7 @@ export default function PositionTracker() {
         }
       }}
     >
-      <DirectionsRunIcon />
+      {userSettings.tracking ? <LocationSearchingIcon /> : <LocationDisabledIcon />}
     </button>
   );
 }

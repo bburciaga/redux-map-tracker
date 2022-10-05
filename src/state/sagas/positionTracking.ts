@@ -4,6 +4,8 @@ import {
   POSITION_TRACKING_START_WATCHING,
   POSITION_TRACKING_STOP_WATCHING,
   POSITION_TRACKING_UPDATE_FAIL,
+  POSITION_TRACKING_UPDATE_REQUEST,
+  POSITION_TRACKING_UPDATE_SUCCESS,
 } from "../actions";
 import { Geolocation } from "@capacitor/geolocation";
 import { selectPositionTracking } from "../reducers/positionTracking";
@@ -42,6 +44,25 @@ function* handle_POSITION_TRACKING_STOP_WATCHING(action: any) {
   }
 }
 
+function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
+  const { position } = action.payload;
+  try {
+    yield put({
+      type: POSITION_TRACKING_UPDATE_SUCCESS,
+      payload: {
+        current_position: position
+      }
+    });
+  } catch(error: any) {
+    yield put({
+      type: POSITION_TRACKING_UPDATE_FAIL,
+      payload: {
+        error: error
+      }
+    });
+  }
+}
+
 export default function* positionTrackingSaga() {
   yield all([
     takeEvery(
@@ -52,5 +73,9 @@ export default function* positionTrackingSaga() {
       POSITION_TRACKING_STOP_WATCHING,
       handle_POSITION_TRACKING_STOP_WATCHING
     ),
+    takeEvery(
+      POSITION_TRACKING_UPDATE_REQUEST,
+      handle_POSITION_TRACKING_UPDATE_REQUEST
+    )
   ]);
 }

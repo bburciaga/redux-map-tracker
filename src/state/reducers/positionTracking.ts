@@ -13,6 +13,7 @@ class PositionTrackingState {
   watch_id: any;
   is_watching: boolean;
   data: any;
+  current_position: any;
 
   constructor() {
     this.initialized = false;
@@ -21,6 +22,7 @@ class PositionTrackingState {
     this.watch_id = null;
     this.is_watching = false;
     this.data = null;
+    this.current_position = null;
   }
 }
 const initialState = new PositionTrackingState();
@@ -49,13 +51,14 @@ function createPositionTrackingReducer(): (
           ...state,
           initialized: true,
           watch_id: action.payload.id,
-          data: action.payload.feature_collection,
+          // data: action.payload.feature_collection,
         };
       }
       case POSITION_TRACKING_UPDATE_SUCCESS: {
         return {
           ...state,
-          data: action.payload.feature_collection,
+          // data: action.payload.feature_collection,
+          current_position: action.payload.current_position
         };
       }
       case POSITION_TRACKING_UPDATE_FAIL: {

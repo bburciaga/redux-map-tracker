@@ -1,6 +1,8 @@
 import {
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
+  USER_SETTINGS_DISABLE_PROOF_MAP,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
+  USER_SETTINGS_ENABLE_PROOF_MAP,
 } from "../actions";
 
 class UserSettingsState {
@@ -8,12 +10,14 @@ class UserSettingsState {
   error: any;
 
   tracking: boolean;
+  proof: boolean;
 
   constructor() {
     this.initialized = true;
     this.error = null;
 
     this.tracking = false;
+    this.proof = true;
   }
 }
 const initialState = new UserSettingsState();
@@ -34,6 +38,18 @@ function createUserSettingsReducer(): (
         return {
           ...state,
           tracking: false,
+        };
+      }
+      case USER_SETTINGS_ENABLE_PROOF_MAP: {
+        return {
+          ...state,
+          proof: true
+        };
+      }
+      case USER_SETTINGS_DISABLE_PROOF_MAP: {
+        return {
+          ...state,
+          proof: false
         };
       }
       default:
