@@ -7,14 +7,6 @@ import Footer from "./components/layout/Footer";
 export default function App() {
   return (
     <Provider store={setupStore()}>
-      {/* 
-        <MapContainers />
-        <Footer Buttons />
-      */}
-      {/* <div style={{ display: "flex", flexFlow: "nowrap row-reverse" }}>
-        <MainMap />
-        <ProofMap />
-      </div> */}
       <Maps />
       <Footer />
     </Provider>
