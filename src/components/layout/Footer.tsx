@@ -38,7 +38,8 @@ export default function Footer () {
         <BuildIcon />
       </IconButton>
       {positionTracking.current_position && <Typography>
-        {positionTracking.current_position.lat}, {positionTracking.current_position.lng}
+        Pos: {positionTracking.current_position.lat}, {positionTracking.current_position.lng}
+        Arr len: {positionTracking.data.length}
       </Typography>}
     </div>
   )

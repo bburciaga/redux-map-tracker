@@ -55,7 +55,7 @@ function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
     if (coord[0] === pos.lng && coord[1] === pos.lat) flag = 1;
   });
 
-  const newData = data;
+  const newData = [...data];
 
   if (!flag) newData.push([pos.lng, pos.lat]);
 
