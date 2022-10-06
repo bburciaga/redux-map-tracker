@@ -46,11 +46,25 @@ function* handle_POSITION_TRACKING_STOP_WATCHING(action: any) {
 
 function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
   const { position } = action.payload;
+  const { data } = yield select(selectPositionTracking);
+  const pos = { lat: position.lat.toFixed(5), lng: position.lng.toFixed(5) };
+  
+  let flag = 0;
+
+  data.forEach(coord => {
+    if (coord[0] === pos.lng && coord[1] === pos.lat) flag = 1;
+  });
+
+  const newData = data;
+
+  if (flag) newData.push([pos.lng, pos.lat]);
+
   try {
     yield put({
       type: POSITION_TRACKING_UPDATE_SUCCESS,
       payload: {
-        current_position: position
+        position_arr: newData,
+        current_position: pos
       }
     });
   } catch(error: any) {

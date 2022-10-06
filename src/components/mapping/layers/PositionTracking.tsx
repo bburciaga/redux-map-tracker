@@ -1,12 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GeoJSON, Marker } from "react-leaflet";
 import { Geolocation } from "@capacitor/geolocation";
 import { useDispatch, useSelector } from "react-redux"; import { selectPositionTracking } from "../../../state/reducers/positionTracking"; import { POSITION_TRACKING_UPDATE_FAIL, POSITION_TRACKING_UPDATE_REQUEST } from "../../../state/actions";
-import { point } from "@turf/turf";
+import { lineString } from "@turf/turf";
 
 export default function PositionTracking() {
   const dispatch = useDispatch();
-  const { is_watching, current_position } = useSelector(selectPositionTracking);
+  const { is_watching, current_position, data } = useSelector(selectPositionTracking);
+  const [polyline, setPolyline] = useState(null);
+
+  useEffect(() => {
+    if (data.length > 1) {
+      setPolyline(lineString(data));
+    }
+  }, [data]);
 
   useEffect(() => {
     console.log(current_position);
@@ -42,11 +49,18 @@ export default function PositionTracking() {
     }
   });
 
-  return <>
-    {current_position && <Marker position={{
-      lat: current_position.lat.toFixed(5),
-      lng: current_position.lng.toFixed(5)
-    }} />}
-  </>;
+  return (
+    <>
+      {current_position && (
+        <Marker position={{
+          lat: current_position.lat,
+          lng: current_position.lng
+        }} />
+      )}
+      {polyline && (
+        <GeoJSON data={polyline} key={Math.random()} />
+      )}
+    </>
+  );
 
 }
