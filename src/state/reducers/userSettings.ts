@@ -17,7 +17,7 @@ class UserSettingsState {
     this.error = null;
 
     this.tracking = false;
-    this.proof = true;
+    this.proof = false;
   }
 }
 const initialState = new UserSettingsState();

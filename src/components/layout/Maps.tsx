@@ -12,17 +12,10 @@ export default function Maps () {
     <div
       style={{ display: "flex", flexFlow: "nowrap row-reverse"}}>
       <div style={{ width: '100%'}}>
+        <Header title={userSettings.proof ? 'Proof' : 'Main'} />
         {userSettings.proof 
-          ? 
-            <>
-              <Header title={'Proof'} />
-              <ProofMap />
-            </>
-          : 
-            <>
-              <Header title={'main'} />
-              <MainMap />
-            </>
+          ? <ProofMap />
+          : <MainMap />
         }
       </div>
     </div>
