@@ -57,7 +57,7 @@ function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
 
   const newData = data;
 
-  if (flag) newData.push([pos.lng, pos.lat]);
+  if (!flag) newData.push([pos.lng, pos.lat]);
 
   try {
     yield put({
