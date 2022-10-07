@@ -31,7 +31,7 @@ export default function PositionTracking() {
             }
           }
         });
-      }, 3000);
+      }, 5000);
     } catch (error: any) {
       dispatch({
         type: POSITION_TRACKING_UPDATE_FAIL,
