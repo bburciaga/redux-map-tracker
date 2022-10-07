@@ -18,7 +18,7 @@ function* handle_POSITION_TRACKING_START_WATCHING(action: any) {
       maximumAge: 0,
     };
     const id = yield Geolocation.watchPosition(options, () => {});
-    // set watch_id to id
+
     yield put({
       type: POSITION_TRACKING_INITIALIZE,
       payload: {
@@ -28,7 +28,9 @@ function* handle_POSITION_TRACKING_START_WATCHING(action: any) {
   } catch (error: any) {
     yield put({
       type: POSITION_TRACKING_UPDATE_FAIL,
-      error: error,
+      payload: {
+        error: error,
+      }
     });
   }
 }
