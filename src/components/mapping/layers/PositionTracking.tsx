@@ -20,18 +20,16 @@ export default function PositionTracking() {
       const position = await Geolocation.getCurrentPosition().then((pos: any) => {
         return pos;
       });
-      setTimeout(() => {
-        console.log('donger');
-        dispatch({
-          type: POSITION_TRACKING_UPDATE_REQUEST,
-          payload: {
-            position: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            }
+      console.log('donger');
+      dispatch({
+        type: POSITION_TRACKING_UPDATE_REQUEST,
+        payload: {
+          position: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
           }
-        });
-      }, 5000);
+        }
+      });
     } catch (error: any) {
       dispatch({
         type: POSITION_TRACKING_UPDATE_FAIL,
@@ -44,7 +42,9 @@ export default function PositionTracking() {
 
   useEffect(() => {
     if (is_watching) {
-      findMe();
+      setTimeout(() => {
+        findMe();
+      }, 3000); 
     }
   });
 
