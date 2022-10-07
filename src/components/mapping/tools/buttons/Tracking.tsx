@@ -6,10 +6,24 @@ import {
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
 } from "../../../../state/actions";
 import { selectUserSettings } from "../../../../state/reducers/userSettings";
+import { useEffect, useState } from 'react';
 
 export default function PositionTracker() {
   const dispatch = useDispatch();
   const userSettings = useSelector(selectUserSettings);
+  const [initialTime, setInitialTime] = useState(0);
+
+  // timer of 3 seconds
+  const timer = () => {
+    if (initialTime > 0) {
+      setTimeout(() => {
+        setInitialTime(initialTime - 1);
+      }, 1000);
+    }
+  };
+
+  // if timer has started, then start the timer
+  useEffect(timer, [initialTime, timer]);
 
   return (
     <button
@@ -22,6 +36,7 @@ export default function PositionTracker() {
         height: 40,
         backgroundColor: "white",
       }}
+      disabled={initialTime > 0} // if timer = 0 return true
       onClick={() => {
         if (userSettings.tracking) {
           dispatch({
@@ -32,6 +47,7 @@ export default function PositionTracker() {
             type: USER_SETTINGS_ENABLE_POSITION_TRACKING,
           });
         }
+        setInitialTime(3);
       }}
     >
       {userSettings.tracking ? <LocationSearchingIcon /> : <LocationDisabledIcon />}

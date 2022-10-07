@@ -81,8 +81,7 @@ function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
 
 export default function* positionTrackingSaga() {
   yield all([
-    debounce(
-      3000,
+    takeEvery(
       POSITION_TRACKING_START_WATCHING,
       handle_POSITION_TRACKING_START_WATCHING,
     ),
@@ -90,7 +89,8 @@ export default function* positionTrackingSaga() {
       POSITION_TRACKING_STOP_WATCHING,
       handle_POSITION_TRACKING_STOP_WATCHING
     ),
-    takeEvery(
+    debounce(
+      3000,
       POSITION_TRACKING_UPDATE_REQUEST,
       handle_POSITION_TRACKING_UPDATE_REQUEST
     )
