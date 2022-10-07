@@ -1,4 +1,4 @@
-import { all, put, select, takeEvery, throttle } from "redux-saga/effects";
+import { all, debounce, put, select, takeEvery, throttle } from "redux-saga/effects";
 import {
   POSITION_TRACKING_INITIALIZE,
   POSITION_TRACKING_START_WATCHING,
@@ -81,9 +81,10 @@ function* handle_POSITION_TRACKING_UPDATE_REQUEST(action: any) {
 
 export default function* positionTrackingSaga() {
   yield all([
-    takeEvery(
+    debounce(
+      3000,
       POSITION_TRACKING_START_WATCHING,
-      handle_POSITION_TRACKING_START_WATCHING
+      handle_POSITION_TRACKING_START_WATCHING,
     ),
     takeEvery(
       POSITION_TRACKING_STOP_WATCHING,

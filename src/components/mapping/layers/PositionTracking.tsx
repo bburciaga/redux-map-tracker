@@ -42,9 +42,7 @@ export default function PositionTracking() {
 
   useEffect(() => {
     if (is_watching) {
-      setTimeout(() => {
-        findMe();
-      }, 3000); 
+        setTimeout(findMe, 3000);
     }
   });
 
