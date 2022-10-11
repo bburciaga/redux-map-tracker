@@ -27,7 +27,7 @@ const BufferedExtents = ({
     const userBounds = map.getBounds();
     const userGeo = createUserGeo(userBounds);
 
-    if (dispatchActions && !bufferedExtents.initialized && map.getZoom() > 8) {
+    if (dispatchActions && !bufferedExtents.initialized && map.getZoom() > 9) {
       dispatch({
         type: BUFFERED_EXTENTS_UPDATE_ON_NO_INTERSECTIONS_REQUEST,
         payload: {
@@ -42,7 +42,7 @@ const BufferedExtents = ({
     const userBounds = map.getBounds();
     const userGeo = createUserGeo(userBounds);
 
-    if (dispatchActions && bufferedExtents.initialized && map.getZoom() > 8) {
+    if (dispatchActions && bufferedExtents.initialized && map.getZoom() > 9) {
       const tempExtents = bufferedExtents.data.features;
       const intersects: any[] = [];
 
