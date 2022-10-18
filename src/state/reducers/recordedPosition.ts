@@ -1,4 +1,5 @@
 import {
+  RECORDED_POSITION_CLEAR_DATA,
   RECORDED_POSITION_UPDATE_FAIL,
   RECORDED_POSITION_UPDATE_SUCCESS,
 } from "../actions";
@@ -28,6 +29,12 @@ function createRecordedPositionReducer(): (
         return {
           ...state,
           data: action.payload.position_arr,
+        };
+      }
+      case RECORDED_POSITION_CLEAR_DATA: {
+        return {
+          ...state,
+          data: [],
         };
       }
       case RECORDED_POSITION_UPDATE_FAIL: {

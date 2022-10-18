@@ -11,7 +11,7 @@ import {
 
 export function ShowPositionButton() {
   const dispatch = useDispatch();
-  const { show_position, is_tracking } = useSelector(selectUserSettings);
+  const { show_position } = useSelector(selectUserSettings);
   const [initialTime, setInitialTime] = useState(0);
 
   // timer of 3 seconds
@@ -47,7 +47,7 @@ export function ShowPositionButton() {
         height: 40,
         backgroundColor: "white",
       }}
-      disabled={is_tracking || initialTime > 0} // if timer = 0 return true
+      disabled={initialTime > 0} // if timer = 0 return true
       onClick={() => {
         if (show_position) disablePosition();
         else enablePosition();
