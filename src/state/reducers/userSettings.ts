@@ -1,6 +1,7 @@
 import {
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
   USER_SETTINGS_DISABLE_PROOF_MAP,
+  USER_SETTINGS_DISABLE_SHOW_POSITION,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
   USER_SETTINGS_ENABLE_PROOF_MAP,
   USER_SETTINGS_ENABLE_SHOW_POSITION,
@@ -59,7 +60,7 @@ function createUserSettingsReducer(): (
           show_position: true,
         };
       }
-      case USER_SETTINGS_ENABLE_SHOW_POSITION: {
+      case USER_SETTINGS_DISABLE_SHOW_POSITION: {
         return {
           ...state,
           show_position: false,
@@ -93,8 +94,8 @@ function createUserSettingsReducer(): (
         return {
           ...state,
           current_position: {
-            lat: action.payload.position.lat,
-            lng: action.payload.position.lng,
+            lat: action.payload.position.lat.toFixed(6),
+            lng: action.payload.position.lng.toFixed(6),
           },
         };
       }

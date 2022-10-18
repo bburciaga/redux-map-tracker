@@ -1,3 +1,8 @@
+import {
+  RECORDED_POSITION_UPDATE_FAIL,
+  RECORDED_POSITION_UPDATE_SUCCESS,
+} from "../actions";
+
 class RecordedPositionState {
   initialized: boolean;
   error: any;
@@ -19,6 +24,18 @@ function createRecordedPositionReducer(): (
 ) => RecordedPositionState {
   return (state = initialState, action) => {
     switch (action.type) {
+      case RECORDED_POSITION_UPDATE_SUCCESS: {
+        return {
+          ...state,
+          data: action.payload.position_arr,
+        };
+      }
+      case RECORDED_POSITION_UPDATE_FAIL: {
+        return {
+          ...state,
+          error: action.payload.error,
+        };
+      }
       default:
         return state;
     }

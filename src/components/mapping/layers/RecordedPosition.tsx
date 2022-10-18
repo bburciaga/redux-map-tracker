@@ -8,41 +8,44 @@ import {
 } from "../../../state/actions";
 import { lineString } from "@turf/turf";
 import { selectUserSettings } from "../../../state/reducers/userSettings";
+import { selectRecordedPosition } from "../../../state/reducers/recordedPosition";
 
 export default function RecordedPosition() {
   const dispatch = useDispatch();
   const { current_position, is_tracking, show_position, watch_id } =
     useSelector(selectUserSettings);
+  const { data } = useSelector(selectRecordedPosition);
   const [polyline, setPolyline] = useState(null);
 
-  // useEffect(() => {
-  //   if (data.length > 1) {
-  //     setPolyline(lineString(data));
-  //   }
-  // }, [data]);
+  function isTracking() {
+    return is_tracking && watch_id !== null;
+  }
+
+  useEffect(() => {
+    if (data.length > 1) {
+      setPolyline(lineString(data));
+    }
+  }, [data]);
 
   const findMe = async () => {
     try {
       let i: number = 0;
       let position: any;
-      const count: number = current_position !== null ? 1 : 10;
-      while (i < count) {
+      while (i < 5) {
         position = await Geolocation.getCurrentPosition().then((pos: any) => {
-          return pos;
+          return pos.coords;
         });
         i = i + 1;
       }
-      if (is_tracking || watch_id) {
-        dispatch({
-          type: USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
-          payload: {
-            position: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
+      dispatch({
+        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
+        payload: {
+          position: {
+            lat: position.latitude,
+            lng: position.longitude,
           },
-        });
-      }
+        },
+      });
     } catch (error: any) {
       dispatch({
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
@@ -54,23 +57,24 @@ export default function RecordedPosition() {
   };
 
   useEffect(() => {
-    if (is_tracking || watch_id || show_position) {
+    if (isTracking() || show_position) {
       findMe();
     }
   });
 
   return (
     <>
-      {watch_id ||
-        (show_position && current_position && (
-          <Marker
-            position={{
-              lat: current_position.lat,
-              lng: current_position.lng,
-            }}
-          />
-        ))}
-      {watch_id && polyline && <GeoJSON data={polyline} key={Math.random()} />}
+      {show_position && current_position && (
+        <Marker
+          position={{
+            lat: current_position.lat,
+            lng: current_position.lng,
+          }}
+        />
+      )}
+      {isTracking() && polyline && (
+        <GeoJSON data={polyline} key={Math.random()} />
+      )}
     </>
   );
 }

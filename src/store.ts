@@ -18,6 +18,7 @@ import {
 import { createUserSettingsReducer } from "./state/reducers/userSettings";
 import userSettingsSaga from "./state/sagas/userSettings";
 import { createRecordedPositionReducer } from "./state/reducers/recordedPosition";
+import recordedPositionSagas from "./state/sagas/recordedPosition";
 
 const sagaMiddlewares = createSagaMiddleware();
 
@@ -37,6 +38,7 @@ export const setupStore = () => {
 
   sagaMiddlewares.run(bufferedExtentsSaga);
   sagaMiddlewares.run(cachedDataSaga);
+  sagaMiddlewares.run(recordedPositionSagas);
   sagaMiddlewares.run(userSettingsSaga);
   sagaMiddlewares.run(watch_CACHED_DATA_UPDATE_REQUEST);
   sagaMiddlewares.run(watch_CACHED_DATA_REMOVE_FURTHEST_REQUEST);
