@@ -3,44 +3,56 @@ import Typography from "@mui/material/Typography/Typography";
 import BuildIcon from "@mui/icons-material/Build";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserSettings } from "../../state/reducers/userSettings";
-import { USER_SETTINGS_DISABLE_PROOF_MAP, USER_SETTINGS_ENABLE_PROOF_MAP } from "../../state/actions";
-import { selectPositionTracking } from "../../state/reducers/positionTracking";
+import {
+  USER_SETTINGS_DISABLE_PROOF_MAP,
+  USER_SETTINGS_ENABLE_PROOF_MAP,
+} from "../../state/actions";
+import { selectRecordedPosition } from "../../state/reducers/recordedPosition";
 
-export default function Footer () {
+export default function Footer() {
   const dispatch = useDispatch();
-  const positionTracking = useSelector(selectPositionTracking);
+  const recordedPosition = useSelector(selectRecordedPosition);
   const userSettings = useSelector(selectUserSettings);
 
   const enableProof = () => {
     dispatch({
-      type: USER_SETTINGS_ENABLE_PROOF_MAP
+      type: USER_SETTINGS_ENABLE_PROOF_MAP,
     });
-  }
+  };
 
   const disableProof = () => {
     dispatch({
-      type: USER_SETTINGS_DISABLE_PROOF_MAP
+      type: USER_SETTINGS_DISABLE_PROOF_MAP,
     });
-  }
+  };
 
   return (
-    <div style={{ display: 'flex', flexFlow: 'nowrap row', justifyContent: 'center' }}>
+    <div
+      style={{
+        display: "flex",
+        flexFlow: "nowrap row",
+        justifyContent: "center",
+      }}
+    >
       <IconButton
-        sx={{ width: 40, height: 40, borderRadius: 0}}
+        sx={{ width: 40, height: 40, borderRadius: 0 }}
         onClick={() => {
           if (userSettings.proof) {
             disableProof();
-          }
-          else {
+          } else {
             enableProof();
           }
-        }}>
+        }}
+      >
         <BuildIcon />
       </IconButton>
-      {positionTracking.current_position && <Typography>
-        Pos: {positionTracking.current_position.lat}, {positionTracking.current_position.lng}
-        Arr len: {positionTracking.data.length}
-      </Typography>}
+      {userSettings.current_position && (
+        <Typography>
+          Pos: {userSettings.current_position.lat},{" "}
+          {userSettings.current_position.lng}
+          Arr len: {recordedPosition.data.length}
+        </Typography>
+      )}
     </div>
-  )
+  );
 }

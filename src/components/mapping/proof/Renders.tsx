@@ -5,7 +5,7 @@ import React from "react";
 import InfoBox from "../tools/InfoBox";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
-import PositionTracking from "../layers/PositionTracking";
+import RecordedPosition from "../layers/RecordedPosition";
 
 export const Renders = () => {
   const userBound = useSelector(selectUserBound);
@@ -30,7 +30,7 @@ export const Renders = () => {
       <BufferedExtents proof={true} dispatchActions={false} />
       <CachedData />
       <InfoBox count={countRef.current} proof={true} />
-      <PositionTracking />
+      <RecordedPosition />
     </div>
   );
 };

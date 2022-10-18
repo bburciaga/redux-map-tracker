@@ -10,7 +10,7 @@ import {
 import { selectUserBound } from "../../../state/reducers/userBound";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
-import PositionTracking from "../layers/PositionTracking";
+import RecordedPosition from "../layers/RecordedPosition";
 
 export const Renders = () => {
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ export const Renders = () => {
     >
       <BufferedExtents />
       <CachedData />
-      <PositionTracking />
+      <RecordedPosition />
       {/* <InfoBox count={countRef.current} /> */}
     </div>
   );
