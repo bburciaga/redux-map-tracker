@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import IconButton from "@mui/material/IconButton";
-import PositionTracker from "./buttons/Tracking";
+import TrackPositionButton from "./buttons/TrackPosition";
+import { ShowPositionButton } from "./buttons/ShowPosition";
 
 const POSITION_CLASSES = {
   bottomleft: "leaflet-bottom leaflet-left",
@@ -11,7 +11,6 @@ const POSITION_CLASSES = {
 };
 
 export default function Toolbar() {
-  const positionClass = POSITION_CLASSES.bottomright;
   const divRef = useRef();
 
   useEffect(() => {
@@ -30,7 +29,8 @@ export default function Toolbar() {
           display: "static",
         }}
       >
-        <PositionTracker />
+        <TrackPositionButton />
+        <ShowPositionButton />
       </div>
     </>
   );

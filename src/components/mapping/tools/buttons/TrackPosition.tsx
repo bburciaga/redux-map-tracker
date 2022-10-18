@@ -1,14 +1,14 @@
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import LocationDisabledIcon from '@mui/icons-material/LocationDisabled';
+import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
+import LocationDisabledIcon from "@mui/icons-material/LocationDisabled";
 import { useDispatch, useSelector } from "react-redux";
 import {
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
 } from "../../../../state/actions";
 import { selectUserSettings } from "../../../../state/reducers/userSettings";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export default function PositionTracker() {
+export default function TrackPositionButton() {
   const dispatch = useDispatch();
   const userSettings = useSelector(selectUserSettings);
   const [initialTime, setInitialTime] = useState(0);
@@ -25,6 +25,16 @@ export default function PositionTracker() {
   // if timer has started, then start the timer
   useEffect(timer, [initialTime, timer]);
 
+  const enableTracking = () =>
+    dispatch({
+      type: USER_SETTINGS_ENABLE_POSITION_TRACKING,
+    });
+
+  const disableTracking = () =>
+    dispatch({
+      type: USER_SETTINGS_DISABLE_POSITION_TRACKING,
+    });
+
   return (
     <button
       className="leaflet-control"
@@ -38,19 +48,16 @@ export default function PositionTracker() {
       }}
       disabled={initialTime > 0} // if timer = 0 return true
       onClick={() => {
-        if (userSettings.tracking) {
-          dispatch({
-            type: USER_SETTINGS_DISABLE_POSITION_TRACKING,
-          });
-        } else {
-          dispatch({
-            type: USER_SETTINGS_ENABLE_POSITION_TRACKING,
-          });
-        }
+        if (userSettings.is_tracking) disableTracking();
+        else enableTracking();
         setInitialTime(3);
       }}
     >
-      {userSettings.tracking ? <LocationSearchingIcon /> : <LocationDisabledIcon />}
+      {userSettings.is_tracking ? (
+        <LocationSearchingIcon />
+      ) : (
+        <LocationDisabledIcon />
+      )}
     </button>
   );
 }

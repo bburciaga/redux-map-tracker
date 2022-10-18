@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { Renders } from "./Renders";
 
 export const ProofMap = () => {

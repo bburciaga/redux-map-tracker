@@ -3,21 +3,34 @@ import {
   USER_SETTINGS_DISABLE_PROOF_MAP,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
   USER_SETTINGS_ENABLE_PROOF_MAP,
+  USER_SETTINGS_ENABLE_SHOW_POSITION,
+  USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
+  USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
+  USER_SETTINGS_UPDATE_WATCH_ID,
+  USER_SETTINGS_UPDATE_WATCH_ID_FAIL,
 } from "../actions";
 
 class UserSettingsState {
   initialized: boolean;
   error: any;
 
-  tracking: boolean;
+  is_tracking: boolean;
+  show_position: boolean;
   proof: boolean;
+
+  watch_id: number;
+  current_position: { lat: number; lng: number };
 
   constructor() {
     this.initialized = true;
     this.error = null;
 
-    this.tracking = false;
+    this.is_tracking = false;
+    this.show_position = false;
     this.proof = false;
+
+    this.watch_id = null;
+    this.current_position = null;
   }
 }
 const initialState = new UserSettingsState();
@@ -31,25 +44,65 @@ function createUserSettingsReducer(): (
       case USER_SETTINGS_ENABLE_POSITION_TRACKING: {
         return {
           ...state,
-          tracking: true,
+          is_tracking: true,
         };
       }
       case USER_SETTINGS_DISABLE_POSITION_TRACKING: {
         return {
           ...state,
-          tracking: false,
+          is_tracking: false,
+        };
+      }
+      case USER_SETTINGS_ENABLE_SHOW_POSITION: {
+        return {
+          ...state,
+          show_position: true,
+        };
+      }
+      case USER_SETTINGS_ENABLE_SHOW_POSITION: {
+        return {
+          ...state,
+          show_position: false,
         };
       }
       case USER_SETTINGS_ENABLE_PROOF_MAP: {
         return {
           ...state,
-          proof: true
+          proof: true,
         };
       }
       case USER_SETTINGS_DISABLE_PROOF_MAP: {
         return {
           ...state,
-          proof: false
+          proof: false,
+        };
+      }
+      case USER_SETTINGS_UPDATE_WATCH_ID: {
+        return {
+          ...state,
+          watch_id: action.payload.id,
+        };
+      }
+      case USER_SETTINGS_UPDATE_WATCH_ID: {
+        return {
+          ...state,
+          watch_id: null,
+        };
+      }
+      case USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS: {
+        return {
+          ...state,
+          current_position: {
+            lat: action.payload.position.lat,
+            lng: action.payload.position.lng,
+          },
+        };
+      }
+      case USER_SETTINGS_UPDATE_WATCH_ID_FAIL:
+      case USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL: {
+        return {
+          ...state,
+          error: action.payload.error,
         };
       }
       default:
