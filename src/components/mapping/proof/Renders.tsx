@@ -5,7 +5,6 @@ import React from "react";
 import InfoBox from "../tools/InfoBox";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
-import RecordedPosition from "../layers/RecordedPosition";
 import { ActivityData } from "../layers/UserSettings";
 
 export const Renders = () => {
