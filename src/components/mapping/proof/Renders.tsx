@@ -6,6 +6,7 @@ import InfoBox from "../tools/InfoBox";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
 import RecordedPosition from "../layers/RecordedPosition";
+import { ActivityData } from "../layers/UserSettings";
 
 export const Renders = () => {
   const userBound = useSelector(selectUserBound);
@@ -30,7 +31,7 @@ export const Renders = () => {
       <BufferedExtents proof={true} dispatchActions={false} />
       <CachedData />
       <InfoBox count={countRef.current} proof={true} />
-      <RecordedPosition />
+      <ActivityData />
     </div>
   );
 };
