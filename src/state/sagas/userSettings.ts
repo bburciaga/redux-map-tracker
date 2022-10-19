@@ -1,14 +1,17 @@
 import { all, put, select, takeEvery, throttle } from "redux-saga/effects";
 import {
+  RECORDED_POSITION_CLEAR_DATA_FAIL,
+  RECORDED_POSITION_CLEAR_DATA_REQUEST,
+  RECORDED_POSITION_CLEAR_DATA_SUCCESS,
   RECORDED_POSITION_UPDATE_FAIL,
   RECORDED_POSITION_UPDATE_REQUEST,
-  // POSITION_TRACKING_REMOVE_WATCH_ID,
-  // POSITION_TRACKING_UPDATE_FAIL,
-  // POSITION_TRACKING_UPDATE_WATCH_ID,
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
   USER_SETTINGS_DISABLE_SHOW_POSITION,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
   USER_SETTINGS_REMOVE_WATCH_ID,
+  USER_SETTINGS_SAVE_DATA_FAIL,
+  USER_SETTINGS_SAVE_DATA_REQUEST,
+  USER_SETTINGS_SAVE_DATA_SUCCESS,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
@@ -17,6 +20,8 @@ import {
 } from "../actions";
 import { Geolocation } from "@capacitor/geolocation";
 import { selectUserSettings } from "../reducers/userSettings";
+import { selectRecordedPosition } from "../reducers/recordedPosition";
+import { lineString } from "@turf/turf";
 
 function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
   const { show_position } = yield select(selectUserSettings);
@@ -105,6 +110,42 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS(action: any) {
   }
 }
 
+function* handle_USER_SETTINGS_SAVE_DATA_REQUEST(action: any) {
+  const { data } = yield select(selectRecordedPosition);
+  try {
+    const new_feature = lineString(data);
+
+    yield put({
+      type: USER_SETTINGS_SAVE_DATA_SUCCESS,
+      payload: {
+        feature: new_feature,
+      },
+    });
+  } catch (error: any) {
+    yield put({
+      type: USER_SETTINGS_SAVE_DATA_FAIL,
+      payload: {
+        error: error,
+      },
+    });
+  }
+}
+
+function* handle_USER_SETTINGS_SAVE_DATA_SUCCESS(action: any) {
+  try {
+    yield put({
+      type: RECORDED_POSITION_CLEAR_DATA_SUCCESS,
+    });
+  } catch (error: any) {
+    yield put({
+      type: RECORDED_POSITION_CLEAR_DATA_FAIL,
+      payload: {
+        error: error,
+      },
+    });
+  }
+}
+
 export default function* userSettingsSaga() {
   yield all([
     takeEvery(
@@ -123,6 +164,14 @@ export default function* userSettingsSaga() {
     takeEvery(
       USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
       handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS
+    ),
+    takeEvery(
+      USER_SETTINGS_SAVE_DATA_REQUEST,
+      handle_USER_SETTINGS_SAVE_DATA_REQUEST
+    ),
+    takeEvery(
+      USER_SETTINGS_SAVE_DATA_SUCCESS,
+      handle_USER_SETTINGS_SAVE_DATA_SUCCESS
     ),
   ]);
 }

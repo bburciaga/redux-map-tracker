@@ -1,8 +1,12 @@
-import { put, select, throttle } from "redux-saga/effects";
+import { all, put, select, takeEvery, throttle } from "redux-saga/effects";
 import {
+  RECORDED_POSITION_CLEAR_DATA_FAIL,
+  RECORDED_POSITION_CLEAR_DATA_REQUEST,
+  RECORDED_POSITION_CLEAR_DATA_SUCCESS,
   RECORDED_POSITION_UPDATE_FAIL,
   RECORDED_POSITION_UPDATE_REQUEST,
   RECORDED_POSITION_UPDATE_SUCCESS,
+  USER_SETTINGS_SAVE_DATA_REQUEST,
 } from "../actions";
 import { selectRecordedPosition } from "../reducers/recordedPosition";
 
@@ -10,8 +14,6 @@ function* handle_RECORDED_POSITION_UPDATE_REQUEST(action: any) {
   const { position } = action.payload;
   const { data } = yield select(selectRecordedPosition);
   const pos = { lat: position.lat.toFixed(5), lng: position.lng.toFixed(5) };
-  console.log(data);
-  console.log(position);
 
   let flag = 0;
 
@@ -40,10 +42,34 @@ function* handle_RECORDED_POSITION_UPDATE_REQUEST(action: any) {
   }
 }
 
+function* handle_RECORDED_POSITION_CLEAR_DATA_REQUEST(action: any) {
+  try {
+    if (action.payload.save_data)
+      yield put({
+        type: USER_SETTINGS_SAVE_DATA_REQUEST,
+      });
+    else
+      yield put({
+        type: RECORDED_POSITION_CLEAR_DATA_SUCCESS,
+      });
+  } catch (error: any) {
+    yield put({
+      type: RECORDED_POSITION_CLEAR_DATA_FAIL,
+      error: error,
+    });
+  }
+}
+
 export default function* recordedPositionSagas() {
-  yield throttle(
-    3000,
-    RECORDED_POSITION_UPDATE_REQUEST,
-    handle_RECORDED_POSITION_UPDATE_REQUEST
-  );
+  yield all([
+    throttle(
+      3000,
+      RECORDED_POSITION_UPDATE_REQUEST,
+      handle_RECORDED_POSITION_UPDATE_REQUEST
+    ),
+    takeEvery(
+      RECORDED_POSITION_CLEAR_DATA_REQUEST,
+      handle_RECORDED_POSITION_CLEAR_DATA_REQUEST
+    ),
+  ]);
 }
