@@ -21,8 +21,8 @@ export const Renders = () => {
   countRef.current++;
 
   useEffect(() => {
-    if (userSettings.current_position) {
-      map.setZoom(15);
+    if (userSettings.current_position && userSettings.is_tracking) {
+      map.setZoom(18);
       map.setView(userSettings.current_position);
     }
   }, [userSettings.current_position]);
