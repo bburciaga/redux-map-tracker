@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMap, useMapEvent } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserGeo } from "../../../helpers/geometry";
@@ -16,14 +16,20 @@ export const Renders = () => {
   const dispatch = useDispatch();
   const map = useMap();
   const userSettings = useSelector(selectUserSettings);
+  const [zoomedToPosition, setZoomedToPosition] = useState(false);
 
   const countRef = React.useRef(0);
   countRef.current++;
 
   useEffect(() => {
-    if (userSettings.current_position && userSettings.is_tracking) {
+    if (
+      userSettings.current_position &&
+      userSettings.is_tracking &&
+      !zoomedToPosition
+    ) {
       map.setZoom(18);
       map.setView(userSettings.current_position);
+      setZoomedToPosition(true);
     }
   }, [userSettings.current_position]);
 
