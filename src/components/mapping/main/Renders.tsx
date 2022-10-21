@@ -20,7 +20,12 @@ export const Renders = () => {
   const countRef = React.useRef(0);
   countRef.current++;
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (userSettings.current_position) {
+      map.setZoom(15);
+      map.setView(userSettings.current_position);
+    }
+  }, [userSettings.current_position]);
 
   useMapEvent("zoomend", (_e) => {
     if (map.getZoom() > 8) {
