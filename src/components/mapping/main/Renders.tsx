@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useMap, useMapEvent } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserGeo } from "../../../helpers/geometry";
 import {
-  USER_BOUND_INITIALIZE,
-  USER_BOUND_UPDATE_ON_MOVE,
-  USER_BOUND_UPDATE_ON_ZOOM,
+  USER_SETTINGS_UPDATE_BOUND_FAIL,
+  USER_SETTINGS_UPDATE_BOUND_ON_MOVE,
+  USER_SETTINGS_UPDATE_BOUND_ON_ZOOM,
 } from "../../../state/actions/index";
-import { selectUserBound } from "../../../state/reducers/userBound";
+import { selectUserSettings } from "../../../state/reducers/userSettings";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
 import RecordedPosition from "../layers/RecordedPosition";
@@ -15,10 +15,12 @@ import RecordedPosition from "../layers/RecordedPosition";
 export const Renders = () => {
   const dispatch = useDispatch();
   const map = useMap();
-  const userBound = useSelector(selectUserBound);
+  const userSettings = useSelector(selectUserSettings);
 
   const countRef = React.useRef(0);
   countRef.current++;
+
+  useEffect(() => {});
 
   useMapEvent("zoomend", (_e) => {
     if (map.getZoom() > 8) {
@@ -26,20 +28,18 @@ export const Renders = () => {
       const tempBounds = map.getBounds();
       const userGeo = createUserGeo(tempBounds);
 
-      if (!userBound.initialized) {
+      try {
         dispatch({
-          type: USER_BOUND_INITIALIZE,
+          type: USER_SETTINGS_UPDATE_BOUND_ON_ZOOM,
           payload: {
             feature: userGeo,
-            count: userBound.count + 1,
           },
         });
-      } else {
+      } catch (error: any) {
         dispatch({
-          type: USER_BOUND_UPDATE_ON_ZOOM,
+          type: USER_SETTINGS_UPDATE_BOUND_FAIL,
           payload: {
-            feature: userGeo,
-            count: userBound.count + 1,
+            error: error,
           },
         });
       }
@@ -50,12 +50,18 @@ export const Renders = () => {
     if (map.getZoom() > 8) {
       const userGeo = createUserGeo(map.getBounds());
       /* User Bound */
-      if (userBound.initialized) {
+      try {
         dispatch({
-          type: USER_BOUND_UPDATE_ON_MOVE,
+          type: USER_SETTINGS_UPDATE_BOUND_ON_MOVE,
           payload: {
             feature: userGeo,
-            count: userBound.count + 1,
+          },
+        });
+      } catch (error: any) {
+        dispatch({
+          type: USER_SETTINGS_UPDATE_BOUND_FAIL,
+          payload: {
+            error: error,
           },
         });
       }

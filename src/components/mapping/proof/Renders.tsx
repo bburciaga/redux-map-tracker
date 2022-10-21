@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
-import { selectUserBound } from "../../../state/reducers/userBound";
 import { GeoJSON } from "react-leaflet";
 import React from "react";
 import InfoBox from "../tools/InfoBox";
 import BufferedExtents from "../layers/BufferedExtents";
 import CachedData from "../layers/CachedData";
 import { ActivityData } from "../layers/UserSettings";
+import { selectUserSettings } from "../../../state/reducers/userSettings";
 
 export const Renders = () => {
-  const userBound = useSelector(selectUserBound);
+  const userSettings = useSelector(selectUserSettings);
 
   const countRef = React.useRef(0);
   countRef.current++;
@@ -20,9 +20,9 @@ export const Renders = () => {
         justifyContent: "flex-end",
       }}
     >
-      {userBound.initialized && (
+      {userSettings.user_bounds && (
         <GeoJSON
-          data={userBound.data}
+          data={userSettings.user_bounds}
           key={Math.random()}
           style={{ color: "red" }}
         />

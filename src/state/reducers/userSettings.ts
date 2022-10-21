@@ -7,6 +7,9 @@ import {
   USER_SETTINGS_ENABLE_SHOW_POSITION,
   USER_SETTINGS_SAVE_DATA_FAIL,
   USER_SETTINGS_SAVE_DATA_SUCCESS,
+  USER_SETTINGS_UPDATE_BOUND_FAIL,
+  USER_SETTINGS_UPDATE_BOUND_ON_MOVE,
+  USER_SETTINGS_UPDATE_BOUND_ON_ZOOM,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
   USER_SETTINGS_UPDATE_WATCH_ID,
@@ -24,6 +27,7 @@ class UserSettingsState {
   watch_id: number;
   current_position: { lat: number; lng: number };
   activity_data: any;
+  user_bounds: any;
 
   constructor() {
     this.initialized = true;
@@ -36,6 +40,7 @@ class UserSettingsState {
     this.watch_id = null;
     this.current_position = null;
     this.activity_data = null;
+    this.user_bounds = null;
   }
 }
 const initialState = new UserSettingsState();
@@ -109,6 +114,14 @@ function createUserSettingsReducer(): (
           activity_data: action.payload.feature,
         };
       }
+      case USER_SETTINGS_UPDATE_BOUND_ON_MOVE:
+      case USER_SETTINGS_UPDATE_BOUND_ON_ZOOM: {
+        return {
+          ...state,
+          user_bounds: action.payload.feature,
+        };
+      }
+      case USER_SETTINGS_UPDATE_BOUND_FAIL:
       case USER_SETTINGS_SAVE_DATA_FAIL:
       case USER_SETTINGS_UPDATE_WATCH_ID_FAIL:
       case USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL: {

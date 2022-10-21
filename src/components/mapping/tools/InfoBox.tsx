@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectBufferedExtents } from "../../../state/reducers/bufferedExtents";
 import { selectCachedData } from "../../../state/reducers/cachedData";
-import { selectUserBound } from "../../../state/reducers/userBound";
 
 interface IInfoBoxProps {
   count: number;
@@ -10,7 +9,6 @@ interface IInfoBoxProps {
 
 const InfoBox = ({ count, proof = false }: IInfoBoxProps) => {
   const bufferedExtents = useSelector(selectBufferedExtents);
-  const userBound = useSelector(selectUserBound);
   const cachedData = useSelector(selectCachedData);
 
   return (
@@ -33,9 +31,6 @@ const InfoBox = ({ count, proof = false }: IInfoBoxProps) => {
         <p style={{ margin: 15 }}>
           Buffered Extents Change Count: {bufferedExtents.count}
         </p>
-      )}
-      {proof && (
-        <p style={{ margin: 15 }}>User Bound Change Count: {userBound.count}</p>
       )}
       <p style={{ margin: 15 }}>Cached Data Render Count: {cachedData.count}</p>
     </div>
