@@ -31,7 +31,11 @@ export const Renders = () => {
       map.setView(userSettings.current_position);
       setZoomedToPosition(true);
     }
-  }, [userSettings.current_position]);
+
+    if (!userSettings.is_tracking) {
+      setZoomedToPosition(false);
+    }
+  }, [userSettings.current_position, userSettings.is_tracking]);
 
   useMapEvent("zoomend", (_e) => {
     if (map.getZoom() > 8) {
