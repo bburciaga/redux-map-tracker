@@ -78,25 +78,32 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { current_position } = yield select(selectUserSettings);
   const { position } = action.payload;
   try {
-    let d: number = current_position.lat && current_position.lng
-      ? distance(
-        [parseFloat(current_position.lng), parseFloat(current_position.lat)],
-        [position.lng, position.lat],
-        {units: 'meters'}
-      )
-      : -1;
+    if (current_position.lat && current_position.lng) {
+      let d: number = distance(
+          [parseFloat(current_position.lng), parseFloat(current_position.lat)],
+          [position.lng, position.lat],
+          {units: 'meters'}
+        );
 
-    if (!current_position || current_position && d > 2)
-      yield put({
-        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
-        payload: {
-          position: action.payload.position,
-        },
-      });
-    else 
-      yield put({
-        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY
-      });
+      if (d > 2)
+        yield put({
+          type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
+          payload: {
+            position: action.payload.position,
+          },
+        });
+      else 
+        yield put({
+          type: USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY
+        });
+    } else {
+        yield put({
+          type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
+          payload: {
+            position: action.payload.position,
+          },
+        });
+    }
   } catch (error: any) {
     yield put({
       type: USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
