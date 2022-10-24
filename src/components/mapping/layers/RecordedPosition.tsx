@@ -59,6 +59,7 @@ export default function RecordedPosition() {
 
   useEffect(() => {
     if (isTracking() || show_position) {
+      console.log('is finding');
       findMe();
     }
   });

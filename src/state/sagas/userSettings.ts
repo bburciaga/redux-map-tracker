@@ -186,8 +186,7 @@ export default function* userSettingsSaga() {
       USER_SETTINGS_DISABLE_POSITION_TRACKING,
       handle_USER_SETTINGS_DISABLE_POSITION_TRACKING
     ),
-    throttle(
-      3000,
+    takeEvery(
       USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
       handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST
     ),
