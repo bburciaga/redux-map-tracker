@@ -86,8 +86,7 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
       )
       : -1;
 
-    console.log('dddddddddddddddd', d);
-    if (d > 2)
+    if (!current_position || current_position && d > 2)
       yield put({
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
         payload: {
