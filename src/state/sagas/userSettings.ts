@@ -78,14 +78,24 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { current_position } = yield select(selectUserSettings);
   const { position } = action.payload;
   try {
-    if (current_position.lat && current_position.lng) {
+    console.log(current_position)
+    if (current_position === null)
+      yield put({
+        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
+        payload: {
+          position: action.payload.position,
+        },
+      });
+    else {
       let d: number = distance(
           [parseFloat(current_position.lng), parseFloat(current_position.lat)],
           [position.lng, position.lat],
           {units: 'meters'}
         );
 
-      if (d > 2)
+      console.log('ddddddddddddddd',d)
+
+      if (d > 1.0)
         yield put({
           type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
           payload: {
@@ -95,13 +105,6 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
       else 
         yield put({
           type: USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY
-        });
-    } else {
-        yield put({
-          type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
-          payload: {
-            position: action.payload.position,
-          },
         });
     }
   } catch (error: any) {
