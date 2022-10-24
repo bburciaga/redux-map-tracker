@@ -12,6 +12,7 @@ import {
   USER_SETTINGS_SAVE_DATA_FAIL,
   USER_SETTINGS_SAVE_DATA_REQUEST,
   USER_SETTINGS_SAVE_DATA_SUCCESS,
+  USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
@@ -21,7 +22,7 @@ import {
 import { Geolocation } from "@capacitor/geolocation";
 import { selectUserSettings } from "../reducers/userSettings";
 import { selectRecordedPosition } from "../reducers/recordedPosition";
-import { lineString } from "@turf/turf";
+import { distance, lineString } from "@turf/turf";
 
 function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
   const { show_position } = yield select(selectUserSettings);
@@ -74,13 +75,29 @@ function* handle_USER_SETTINGS_DISABLE_POSITION_TRACKING(action: any) {
 }
 
 function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
+  const { current_position } = yield select(selectUserSettings);
+  const { position } = action.payload;
   try {
-    yield put({
-      type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
-      payload: {
-        position: action.payload.position,
-      },
-    });
+    let d: number = current_position.lat && current_position.lng
+      ? distance(
+        [parseFloat(current_position.lng), parseFloat(current_position.lat)],
+        [position.lng, position.lat],
+        {units: 'meters'}
+      )
+      : -1;
+
+    console.log('dddddddddddddddd', d);
+    if (d > 2)
+      yield put({
+        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
+        payload: {
+          position: action.payload.position,
+        },
+      });
+    else 
+      yield put({
+        type: USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY
+      });
   } catch (error: any) {
     yield put({
       type: USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL,
@@ -95,11 +112,13 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS(action: any) {
   const { is_tracking, watch_id } = yield select(selectUserSettings);
 
   try {
-    if (is_tracking && watch_id !== null)
+    if (is_tracking && watch_id !== null) {
+
       yield put({
         type: RECORDED_POSITION_UPDATE_REQUEST,
         payload: action.payload,
       });
+    }
   } catch (error: any) {
     yield put({
       type: RECORDED_POSITION_UPDATE_FAIL,

@@ -13,7 +13,7 @@ import { selectRecordedPosition } from "../reducers/recordedPosition";
 function* handle_RECORDED_POSITION_UPDATE_REQUEST(action: any) {
   const { position } = action.payload;
   const { data } = yield select(selectRecordedPosition);
-  const pos = { lat: position.lat.toFixed(5), lng: position.lng.toFixed(5) };
+  const pos = { lat: position.lat.toFixed(6), lng: position.lng.toFixed(6) };
 
   let flag = 0;
 
