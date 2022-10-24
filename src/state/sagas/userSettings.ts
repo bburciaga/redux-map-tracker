@@ -78,7 +78,6 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { current_position } = yield select(selectUserSettings);
   const { position } = action.payload;
   try {
-    console.log(current_position)
     if (current_position === null)
       yield put({
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
@@ -93,7 +92,6 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
           {units: 'meters'}
         );
 
-      console.log('ddddddddddddddd',d)
 
       if (d > 1.0)
         yield put({
