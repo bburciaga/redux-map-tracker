@@ -102,10 +102,7 @@ function createUserSettingsReducer(): (
       case USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS: {
         return {
           ...state,
-          current_position: {
-            lat: action.payload.position.lat.toFixed(6),
-            lng: action.payload.position.lng.toFixed(6),
-          },
+          current_position: action.payload.position,
         };
       }
       case USER_SETTINGS_SAVE_DATA_SUCCESS: {

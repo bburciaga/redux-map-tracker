@@ -77,17 +77,21 @@ function* handle_USER_SETTINGS_DISABLE_POSITION_TRACKING(action: any) {
 function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { current_position } = yield select(selectUserSettings);
   const { position } = action.payload;
+  const pos: {lat: number, lng: number} = {
+    lat: parseFloat(position.lat),
+    lng: parseFloat(position.lng)
+  };
   try {
     if (current_position === null)
       yield put({
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
         payload: {
-          position: action.payload.position,
+          position: pos
         },
       });
     else {
       let d: number = distance(
-          [parseFloat(current_position.lng), parseFloat(current_position.lat)],
+          [current_position.lng, current_position.lat],
           [position.lng, position.lat],
           {units: 'meters'}
         );
