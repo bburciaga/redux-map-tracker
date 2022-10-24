@@ -1,7 +1,6 @@
-import { all, put, select, takeEvery, throttle } from "redux-saga/effects";
+import { all, put, select, takeEvery } from "redux-saga/effects";
 import {
   RECORDED_POSITION_CLEAR_DATA_FAIL,
-  RECORDED_POSITION_CLEAR_DATA_REQUEST,
   RECORDED_POSITION_CLEAR_DATA_SUCCESS,
   RECORDED_POSITION_UPDATE_FAIL,
   RECORDED_POSITION_UPDATE_REQUEST,
