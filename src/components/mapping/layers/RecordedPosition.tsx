@@ -31,12 +31,13 @@ export default function RecordedPosition() {
     try {
       let i: number = 0;
       let position: any;
-      while (i < 5) {
+      let count: number = current_position === null ? 4 : 0;
+      do {
         position = await Geolocation.getCurrentPosition().then((pos: any) => {
           return pos.coords;
         });
         i = i + 1;
-      }
+      } while (i < count); 
       dispatch({
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
         payload: {
