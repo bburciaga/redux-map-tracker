@@ -89,7 +89,7 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
           {units: 'meters'}
         );
 
-      if (d > 1.0 || data.length === 0)
+      if (d > 1.5 || data.length === 0)
         yield put({
           type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
           payload: {
