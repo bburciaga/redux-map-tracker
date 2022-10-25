@@ -90,8 +90,8 @@ export const Renders = () => {
         justifyContent: "flex-end",
       }}
     >
-      <BufferedExtents />
-      <CachedData />
+      {/* <BufferedExtents /> */}
+      {/* <CachedData /> */}
       <RecordedPosition />
       {/* <InfoBox count={countRef.current} /> */}
     </div>

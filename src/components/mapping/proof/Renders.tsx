@@ -27,8 +27,8 @@ export const Renders = () => {
           style={{ color: "red" }}
         />
       )}
-      <BufferedExtents proof={true} dispatchActions={false} />
-      <CachedData />
+      {/* <BufferedExtents proof={true} dispatchActions={false} /> */}
+      {/* <CachedData /> */}
       <InfoBox count={countRef.current} proof={true} />
       <ActivityData />
     </div>

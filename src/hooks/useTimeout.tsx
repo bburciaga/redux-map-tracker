@@ -26,5 +26,5 @@ export default function useTimeout(callback: any, delay: number) {
     set();
   }, [clear, set]);
 
-  return { reset, clear };
+  return reset();
 }

@@ -24,8 +24,6 @@ import { selectRecordedPosition } from "../reducers/recordedPosition";
 import { distance, lineString } from "@turf/turf";
 
 function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
-  const { show_position } = yield select(selectUserSettings);
-
   try {
     const options = {
       enableHighAccuracy: true,
@@ -34,11 +32,6 @@ function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
       radius: 50,
     };
     const id = yield Geolocation.watchPosition(options, () => {});
-
-    if (show_position)
-      yield put({
-        type: USER_SETTINGS_DISABLE_SHOW_POSITION,
-      });
 
     yield put({
       type: USER_SETTINGS_UPDATE_WATCH_ID,
@@ -75,6 +68,7 @@ function* handle_USER_SETTINGS_DISABLE_POSITION_TRACKING(action: any) {
 
 function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { current_position } = yield select(selectUserSettings);
+  const { data } = yield select(selectRecordedPosition);
   const { position } = action.payload;
   const pos: {lat: number, lng: number} = {
     lat: parseFloat(position.lat),
@@ -95,8 +89,7 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
           {units: 'meters'}
         );
 
-
-      if (d > 1.0)
+      if (d > 1.0 || data.length === 0)
         yield put({
           type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
           payload: {

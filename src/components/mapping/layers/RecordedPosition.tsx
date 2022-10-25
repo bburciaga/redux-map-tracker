@@ -9,6 +9,7 @@ import {
 import { lineString } from "@turf/turf";
 import { selectUserSettings } from "../../../state/reducers/userSettings";
 import { selectRecordedPosition } from "../../../state/reducers/recordedPosition";
+import useTimeout from "../../../hooks/useTimeout";
 
 export default function RecordedPosition() {
   const dispatch = useDispatch();
@@ -57,12 +58,11 @@ export default function RecordedPosition() {
     }
   };
 
-  useEffect(() => {
+  useTimeout(() => {
     if (isTracking() || show_position) {
-      console.log('is finding');
       findMe();
     }
-  });
+  }, 2000);
 
   return (
     <>

@@ -26,20 +26,20 @@ export const setupStore = () => {
 
   const store = createStore(
     combineReducers({
-      bufferedExtents: createBufferedExtentsReducer(),
-      cachedData: createCachedDataReducer(),
+      // bufferedExtents: createBufferedExtentsReducer(),
+      // cachedData: createCachedDataReducer(),
       recordedPosition: createRecordedPositionReducer(),
       userSettings: createUserSettingsReducer(),
     }),
     composeWithDevTools(middlewares)
   );
 
-  sagaMiddlewares.run(bufferedExtentsSaga);
-  sagaMiddlewares.run(cachedDataSaga);
+  // sagaMiddlewares.run(bufferedExtentsSaga);
+  // sagaMiddlewares.run(cachedDataSaga);
   sagaMiddlewares.run(recordedPositionSagas);
   sagaMiddlewares.run(userSettingsSaga);
-  sagaMiddlewares.run(watch_CACHED_DATA_UPDATE_REQUEST);
-  sagaMiddlewares.run(watch_CACHED_DATA_REMOVE_FURTHEST_REQUEST);
+  // sagaMiddlewares.run(watch_CACHED_DATA_UPDATE_REQUEST);
+  // sagaMiddlewares.run(watch_CACHED_DATA_REMOVE_FURTHEST_REQUEST);
 
   return store;
 };
