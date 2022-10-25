@@ -23,8 +23,11 @@ export default function RecordedPosition() {
   }
 
   useEffect(() => {
-    if (data.length > 1) {
+    if (data.length >= 2) {
       setPolyline(lineString(data));
+    }
+    if (data.length <= 1) {
+      setPolyline(null);
     }
   }, [data]);
 
