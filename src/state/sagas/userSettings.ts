@@ -71,8 +71,8 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
   const { data } = yield select(selectRecordedPosition);
   const { position } = action.payload;
   const pos: {lat: number, lng: number} = {
-    lat: parseFloat(position.lat),
-    lng: parseFloat(position.lng)
+    lat: parseFloat(position.lat.toFixed(6)),
+    lng: parseFloat(position.lng.toFixed(6))
   };
   try {
     if (current_position === null)
