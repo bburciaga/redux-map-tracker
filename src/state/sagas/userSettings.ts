@@ -93,7 +93,7 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST(action: any) {
         yield put({
           type: USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
           payload: {
-            position: action.payload.position,
+            position: pos,
           },
         });
       else 
