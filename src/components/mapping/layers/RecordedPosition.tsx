@@ -38,7 +38,7 @@ export default function RecordedPosition() {
       let count: number = current_position === null ? 4 : 0;
       do {
         position = await Geolocation.getCurrentPosition().then((pos: any) => {
-          return pos.coords;
+          return pos;
         });
         i = i + 1;
       } while (i < count); 
@@ -46,8 +46,8 @@ export default function RecordedPosition() {
         type: USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
         payload: {
           position: {
-            lat: position.latitude,
-            lng: position.longitude,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
           },
         },
       });
