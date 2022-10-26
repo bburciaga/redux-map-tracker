@@ -46,7 +46,7 @@ function* handle_RECORDED_POSITION_CLEAR_DATA_REQUEST(action: any) {
   try {
     if (action.payload.save_data)
       yield put({
-        type: USER_SETTINGS_SAVE_DATA_REQUEST,
+        type: action.payload.action_to_dispatch,
       });
     else
       yield put({
