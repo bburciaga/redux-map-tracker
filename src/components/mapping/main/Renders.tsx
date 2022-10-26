@@ -27,8 +27,7 @@ export const Renders = () => {
       userSettings.is_tracking &&
       !zoomedToPosition
     ) {
-      map.setZoom(18);
-      map.setView(userSettings.current_position);
+      map.setView(userSettings.current_position, 18);
       setZoomedToPosition(true);
     }
 
@@ -90,7 +89,7 @@ export const Renders = () => {
         justifyContent: "flex-end",
       }}
     >
-      {/* <BufferedExtents /> */}
+      <BufferedExtents />
       {/* <CachedData /> */}
       <RecordedPosition />
       {/* <InfoBox count={countRef.current} /> */}
