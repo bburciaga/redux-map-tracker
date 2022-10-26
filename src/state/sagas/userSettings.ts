@@ -8,6 +8,7 @@ import {
   USER_SETTINGS_DISABLE_SHOW_POSITION,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
   USER_SETTINGS_REMOVE_WATCH_ID,
+  USER_SETTINGS_SAVE_DATA_DENY,
   USER_SETTINGS_SAVE_DATA_FAIL,
   USER_SETTINGS_SAVE_DATA_REQUEST,
   USER_SETTINGS_SAVE_DATA_SUCCESS,
@@ -135,14 +136,19 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS(action: any) {
 function* handle_USER_SETTINGS_SAVE_DATA_REQUEST(action: any) {
   const { data } = yield select(selectRecordedPosition);
   try {
-    const new_feature = lineString(data);
+    if (data.length >= 2) {
+      const new_feature = lineString(data);
 
-    yield put({
-      type: USER_SETTINGS_SAVE_DATA_SUCCESS,
-      payload: {
-        feature: new_feature,
-      },
-    });
+      yield put({
+        type: USER_SETTINGS_SAVE_DATA_SUCCESS,
+        payload: {
+          feature: new_feature,
+        },
+      });
+    } else 
+      yield put({
+        type: USER_SETTINGS_SAVE_DATA_DENY
+      });
   } catch (error: any) {
     yield put({
       type: USER_SETTINGS_SAVE_DATA_FAIL,
@@ -158,6 +164,21 @@ function* handle_USER_SETTINGS_SAVE_DATA_SUCCESS(action: any) {
     yield put({
       type: RECORDED_POSITION_CLEAR_DATA_SUCCESS,
     });
+  } catch (error: any) {
+    yield put({
+      type: RECORDED_POSITION_CLEAR_DATA_FAIL,
+      payload: {
+        error: error,
+      },
+    });
+  }
+}
+
+function* handle_USER_SETTINGS_SAVE_DATA_DENY(action: any) {
+  try {
+    yield put({
+      type: RECORDED_POSITION_CLEAR_DATA_SUCCESS
+    })
   } catch (error: any) {
     yield put({
       type: RECORDED_POSITION_CLEAR_DATA_FAIL,
@@ -194,5 +215,9 @@ export default function* userSettingsSaga() {
       USER_SETTINGS_SAVE_DATA_SUCCESS,
       handle_USER_SETTINGS_SAVE_DATA_SUCCESS
     ),
+    takeEvery(
+      USER_SETTINGS_SAVE_DATA_DENY,
+      handle_USER_SETTINGS_SAVE_DATA_DENY
+    )
   ]);
 }
