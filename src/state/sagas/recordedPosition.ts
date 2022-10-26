@@ -1,4 +1,3 @@
-import { distance } from "@turf/turf";
 import { all, put, select, takeEvery, throttle } from "redux-saga/effects";
 import {
   RECORDED_POSITION_CLEAR_DATA_FAIL,
@@ -14,15 +13,9 @@ function* handle_RECORDED_POSITION_UPDATE_REQUEST(action: any) {
   const { position } = action.payload;
   const { data } = yield select(selectRecordedPosition);
 
-  let d: number = data.length ? distance(
-      [data[data.length - 1][0], data[data.length - 1][0]],
-      [position.lng, position.lat],
-      {units: 'meters'}
-    ) : -1;
-
   const newData = [...data];
 
-  if (d > 1.5 || data.length === 0) newData.push([position.lng, position.lat]);
+  newData.push([position.lng, position.lat]);
 
   try {
     yield put({
