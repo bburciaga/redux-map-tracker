@@ -5,6 +5,7 @@ import {
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
   USER_SETTINGS_ENABLE_PROOF_MAP,
   USER_SETTINGS_ENABLE_SHOW_POSITION,
+  USER_SETTINGS_REMOVE_WATCH_ID,
   USER_SETTINGS_SAVE_DATA_FAIL,
   USER_SETTINGS_SAVE_DATA_SUCCESS,
   USER_SETTINGS_UPDATE_BOUND_FAIL,
@@ -17,7 +18,6 @@ import {
 } from "../actions";
 
 class UserSettingsState {
-  initialized: boolean;
   error: any;
 
   is_tracking: boolean;
@@ -30,7 +30,6 @@ class UserSettingsState {
   user_bounds: any;
 
   constructor() {
-    this.initialized = true;
     this.error = null;
 
     this.is_tracking = false;
@@ -93,7 +92,7 @@ function createUserSettingsReducer(): (
           watch_id: action.payload.id,
         };
       }
-      case USER_SETTINGS_UPDATE_WATCH_ID: {
+      case USER_SETTINGS_REMOVE_WATCH_ID: {
         return {
           ...state,
           watch_id: null,
