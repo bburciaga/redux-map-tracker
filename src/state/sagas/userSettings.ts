@@ -7,6 +7,7 @@ import {
   USER_SETTINGS_DISABLE_POSITION_TRACKING,
   USER_SETTINGS_DISABLE_SHOW_POSITION,
   USER_SETTINGS_ENABLE_POSITION_TRACKING,
+  USER_SETTINGS_ENABLE_SHOW_POSITION,
   USER_SETTINGS_REMOVE_WATCH_ID,
   USER_SETTINGS_SAVE_DATA_DENY,
   USER_SETTINGS_SAVE_DATA_FAIL,
@@ -24,22 +25,25 @@ import { selectUserSettings } from "../reducers/userSettings";
 import { selectRecordedPosition } from "../reducers/recordedPosition";
 import { distance, lineString } from "@turf/turf";
 
-function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
+function* handle_USER_SETTINGS_UPDATE_WATCH_ID(action: any) {
+  const { watch_id } = yield select(selectUserSettings);
   try {
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-      radius: 50,
-    };
-    const id = yield Geolocation.watchPosition(options, () => {});
+    if (!watch_id) {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+        radius: 50
+      }
+      const id = yield Geolocation.watchPosition(options, () => {});
 
-    yield put({
-      type: USER_SETTINGS_UPDATE_WATCH_ID,
-      payload: {
-        id: id,
-      },
-    });
+      yield put({
+        type: USER_SETTINGS_UPDATE_WATCH_ID,
+        payload: {
+          id: id,
+        },
+      });
+    }
   } catch (error: any) {
     yield put({
       type: USER_SETTINGS_UPDATE_WATCH_ID_FAIL,
@@ -50,13 +54,39 @@ function* handle_USER_SETTINGS_ENABLE_POSITION_TRACKING(action: any) {
   }
 }
 
+
 function* handle_USER_SETTINGS_DISABLE_POSITION_TRACKING(action: any) {
-  const { watch_id } = yield select(selectUserSettings);
+  const { show_position, watch_id } = yield select(selectUserSettings);
   try {
-    yield Geolocation.clearWatch({ id: watch_id });
+    if (show_position) {
+      // yield do not clear watch
+    } else {
+      yield Geolocation.clearWatch({ id: watch_id });
+      yield put({
+        type: USER_SETTINGS_REMOVE_WATCH_ID,
+      });
+    }
+  } catch (error: any) {
     yield put({
-      type: USER_SETTINGS_REMOVE_WATCH_ID,
+      type: USER_SETTINGS_UPDATE_WATCH_ID_FAIL,
+      payload: {
+        error: error,
+      },
     });
+  }
+}
+
+function* handle_USER_SETTINGS_DISABLE_SHOW_POSITION(action: any) {
+  const { is_tracking, watch_id } = yield select(selectUserSettings);
+  try {
+    if (is_tracking) {
+      // yield do not clear watch
+    } else {
+      yield Geolocation.clearWatch({ id: watch_id });
+      yield put({
+        type: USER_SETTINGS_REMOVE_WATCH_ID,
+      });
+    }
   } catch (error: any) {
     yield put({
       type: USER_SETTINGS_UPDATE_WATCH_ID_FAIL,
@@ -192,8 +222,16 @@ function* handle_USER_SETTINGS_SAVE_DATA_DENY(action: any) {
 export default function* userSettingsSaga() {
   yield all([
     takeEvery(
+      USER_SETTINGS_ENABLE_SHOW_POSITION,
+      handle_USER_SETTINGS_UPDATE_WATCH_ID
+    ),
+    takeEvery(
+      USER_SETTINGS_DISABLE_SHOW_POSITION,
+      handle_USER_SETTINGS_DISABLE_SHOW_POSITION
+    ),
+    takeEvery(
       USER_SETTINGS_ENABLE_POSITION_TRACKING,
-      handle_USER_SETTINGS_ENABLE_POSITION_TRACKING
+      handle_USER_SETTINGS_UPDATE_WATCH_ID
     ),
     takeEvery(
       USER_SETTINGS_DISABLE_POSITION_TRACKING,
