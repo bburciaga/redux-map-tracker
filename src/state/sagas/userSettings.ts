@@ -24,7 +24,7 @@ import {
 import { Geolocation } from "@capacitor/geolocation";
 import { selectUserSettings } from "../reducers/userSettings";
 import { selectRecordedPosition } from "../reducers/recordedPosition";
-import { distance, lineString } from "@turf/turf";
+import { distance, polygon } from "@turf/turf";
 
 function* handle_USER_SETTINGS_UPDATE_WATCH_ID(action: any) {
   const { watch_id } = yield select(selectUserSettings);
@@ -175,8 +175,9 @@ function* handle_USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS(action: any) {
 function* handle_USER_SETTINGS_SAVE_DATA_REQUEST(action: any) {
   const { data } = yield select(selectRecordedPosition);
   try {
-    if (data.length >= 2) {
-      const new_feature = lineString(data);
+    if (data.length >= 3) {
+      const new_data = [...data, data[0]];
+      const new_feature = polygon(new_data);
 
       yield put({
         type: USER_SETTINGS_SAVE_DATA_SUCCESS,

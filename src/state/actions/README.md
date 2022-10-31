@@ -32,7 +32,7 @@ current_position shall be updated.
 > must be dispatched.`USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS`.
 
 `activity_data` if the user finishes GPS tracking drawing the 
-linestring then the user can decide to save the recorded positions 
+polygon then the user can decide to save the recorded positions 
 into this variable.
 > To update, the action `USER_SETTINGS_SAVE_DATA_SUCCESS` must be
 > dispatched.
@@ -102,7 +102,7 @@ actions will be dispatch:
     - `RECORDED_POSITION_UPDATE_FAIL`
 
 > The `recordedPosition` reducer is where we have an array of positions
-> to be drawn as a Linestring for the map.
+> to be drawn as a Polygon for the map.
 
 ### Saving Recorded Positions to User Settings State
 
@@ -115,7 +115,7 @@ follwoing actions could be dispatched:
 
 > The deny action happens if and only if there is not enough positions
 > in recorded positions state. This is to avoid any crashes that could
-> happen with turf creating a Linestring feature.
+> happen with turf creating a Polygon feature.
 
 If the request triggers the SUCCESS action the following actions will
 be dispatched:
