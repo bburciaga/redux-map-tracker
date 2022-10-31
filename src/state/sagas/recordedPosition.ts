@@ -54,8 +54,7 @@ function* handle_RECORDED_POSITION_CLEAR_DATA_REQUEST(action: any) {
 
 export default function* recordedPositionSagas() {
   yield all([
-    throttle(
-      3000,
+    takeEvery(
       RECORDED_POSITION_UPDATE_REQUEST,
       handle_RECORDED_POSITION_UPDATE_REQUEST
     ),
