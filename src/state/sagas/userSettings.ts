@@ -177,7 +177,7 @@ function* handle_USER_SETTINGS_SAVE_DATA_REQUEST(action: any) {
   try {
     if (data.length >= 3) {
       const new_data = [...data, data[0]];
-      const new_feature = polygon(new_data);
+      const new_feature = polygon([new_data]);
 
       yield put({
         type: USER_SETTINGS_SAVE_DATA_SUCCESS,
