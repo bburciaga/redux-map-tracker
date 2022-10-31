@@ -18,6 +18,7 @@ import {
   USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST,
   USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS,
   USER_SETTINGS_UPDATE_WATCH_ID,
+  USER_SETTINGS_UPDATE_WATCH_ID_DENY,
   USER_SETTINGS_UPDATE_WATCH_ID_FAIL,
 } from "../actions";
 import { Geolocation } from "@capacitor/geolocation";
@@ -28,7 +29,11 @@ import { distance, lineString } from "@turf/turf";
 function* handle_USER_SETTINGS_UPDATE_WATCH_ID(action: any) {
   const { watch_id } = yield select(selectUserSettings);
   try {
-    if (!watch_id) {
+    if (watch_id) {
+      yield put({
+        type: USER_SETTINGS_UPDATE_WATCH_ID_DENY
+      });
+    } else {
       const options = {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -59,7 +64,9 @@ function* handle_USER_SETTINGS_DISABLE_POSITION_TRACKING(action: any) {
   const { show_position, watch_id } = yield select(selectUserSettings);
   try {
     if (show_position) {
-      // yield do not clear watch
+      yield put({
+        type: USER_SETTINGS_UPDATE_WATCH_ID_DENY
+      });
     } else {
       yield Geolocation.clearWatch({ id: watch_id });
       yield put({
@@ -80,7 +87,9 @@ function* handle_USER_SETTINGS_DISABLE_SHOW_POSITION(action: any) {
   const { is_tracking, watch_id } = yield select(selectUserSettings);
   try {
     if (is_tracking) {
-      // yield do not clear watch
+      yield put({
+        type: USER_SETTINGS_UPDATE_WATCH_ID_DENY
+      });
     } else {
       yield Geolocation.clearWatch({ id: watch_id });
       yield put({

@@ -38,3 +38,98 @@ into this variable.
 > dispatched.
 
 ### Toggling the Position Tracking
+
+To dispatch the actions for updating the `is_tracking` variable the
+app must have a useDispatch() event to dispatch the ENABLE or DISABLE
+actions.
+
+### Toggling the Show Position
+
+To dispatch the actions for updating the `show_position` variable the
+app must have a useDispatch() event to dispatch the ENABLE or DISABLE
+actions.
+
+### Updating the Watch ID
+
+The `watch_id` should be automatically updated through the userSettings
+Saga. The following saga handlers update the id:
+    - `handle_USER_SETTINGS_ENABLE_POSITION_TRACKING`
+    - `handle_USER_SETTINGS_DISABLE_POSITION_TRACKING`
+    - `handle_USER_SETTINGS_ENABLE_SHOW_POSITION`
+    - `handle_USER_SETTINGS_DISABLE_SHOW_POSITION`
+
+If the user decides to enable `show_position` it will dispatch one of
+the follwing actions:
+    - `USER_SETTINGS_UPDATE_WATCH_ID`
+    - `USER_SETTINGS_UPDATE_WATCH_ID_DENY`
+    - `USER_SETTINGS_UPDATE_WATCH_ID_FAIL`
+
+> The deny action happens if and only if `is_tracking` is enabled. This
+> is because there is alreay a `watch_id` existing so we should not
+> overwrite the ID.
+>> The same actions dispatch when the user wants to enable `is_tracking`
+
+If the user decides to disable `show_position` it will dispatch one of 
+the following actions:
+    - `USER_SETTINGS_REMOVE_WATCH_ID`
+    - `USER_SETTINGS_UPDATE_WATCH_ID_DENY`
+    - `USER_SETTINGS_UPDATE_WATCH_ID_FAIL`
+
+> The deny action happens if and only if `is_tracking` is enabled. This
+> is because we wouldn't want to remove the ID if the user was still
+> tracking their position, but wanted to disable the marker.
+>> The same actions dispatch when the user wants to disable `is_tracking`
+
+### Updating the Current Position and Recorded Positions Array
+
+If there is a `watch_id` and `is_tracking` or `show_position` are true
+then the findMe() function will dispatch a
+`USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST`. The following actions
+can be dispatched:
+    - `USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS`
+    - `USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY`
+    - `USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL`
+
+> The deny action happens if and only if there is a `current_position`
+> and if the fetched position from the GPS is less than value 1.5 m from
+> the previous position.
+>> This is to avoid having clusters of data in your general position 
+>> since the GPS data isn't 100% accurate.
+
+If there is a successful update to the `current_position` the following
+actions will be dispatch:
+    - `RECORDED_POSITION_UPDATE_REQUEST`
+    - `RECORDED_POSITION_UPDATE_FAIL`
+
+> The `recordedPosition` reducer is where we have an array of positions
+> to be drawn as a Linestring for the map.
+
+### Saving Recorded Positions to User Settings State
+
+After the user disables `is_tracking` the user should be followed up
+with a `USER_SETTINGS_SAVE_DATA_REQUEST`. Upon this request action the
+follwoing actions could be dispatched:
+    - `USER_SETTINGS_SAVE_DATA_SUCCESS`
+    - `USER_SETTINGS_SAVE_DATA_DENY`
+    - `USER_SETTINGS_SAVE_DATA_FAIL`
+
+> The deny action happens if and only if there is not enough positions
+> in recorded positions state. This is to avoid any crashes that could
+> happen with turf creating a Linestring feature.
+
+If the request triggers the SUCCESS action the following actions will
+be dispatched:
+    - `RECORDED_POSITION_CLEAR_DATA_SUCCESS`
+    - `RECORDED_POSITION_CLEAR_DATA_FAIL`
+
+> The purpose is to clear the recorded positions in the case that we
+> want to record a new set of positions.
+
+If the request triggers the DENY action the following actions will be
+dispatched:
+    - `RECORDED_POSITION_CLEAR_DATA_SUCCESS`
+    - `RECORDED_POSITION_CLEAR_DATA_FAIL`
+
+> If there was a lack of positions in the Recorded Positions state then
+> the positions should be cleared if the user wants to reattempt to
+> record the positions again.
