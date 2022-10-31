@@ -28,11 +28,11 @@ and when it's watching.
 `current_position: {lat: number, lng: number` if either is_tracking
 OR show_position are enabled (both can be enabled at once) the
 current_position shall be updated.
-> To update the position, the action 
+> To update the position, the action
 > must be dispatched.`USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS`.
 
-`activity_data` if the user finishes GPS tracking drawing the 
-polygon then the user can decide to save the recorded positions 
+`activity_data` if the user finishes GPS tracking drawing the
+polygon then the user can decide to save the recorded positions
 into this variable.
 > To update, the action `USER_SETTINGS_SAVE_DATA_SUCCESS` must be
 > dispatched.
@@ -64,18 +64,18 @@ the follwing actions:
     - `USER_SETTINGS_UPDATE_WATCH_ID_DENY`
     - `USER_SETTINGS_UPDATE_WATCH_ID_FAIL`
 
-> The deny action happens if and only if `is_tracking` is enabled. This
+> The DENY action happens if and only if `is_tracking` is enabled. This
 > is because there is alreay a `watch_id` existing so we should not
 > overwrite the ID.
 >> The same actions dispatch when the user wants to enable `is_tracking`
 
-If the user decides to disable `show_position` it will dispatch one of 
+If the user decides to disable `show_position` it will dispatch one of
 the following actions:
     - `USER_SETTINGS_REMOVE_WATCH_ID`
     - `USER_SETTINGS_UPDATE_WATCH_ID_DENY`
     - `USER_SETTINGS_UPDATE_WATCH_ID_FAIL`
 
-> The deny action happens if and only if `is_tracking` is enabled. This
+> The DENY action happens if and only if `is_tracking` is enabled. This
 > is because we wouldn't want to remove the ID if the user was still
 > tracking their position, but wanted to disable the marker.
 >> The same actions dispatch when the user wants to disable `is_tracking`
@@ -90,10 +90,10 @@ can be dispatched:
     - `USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY`
     - `USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL`
 
-> The deny action happens if and only if there is a `current_position`
+> The DENY action happens if and only if there is a `current_position`
 > and if the fetched position from the GPS is less than value 1.5 m from
 > the previous position.
->> This is to avoid having clusters of data in your general position 
+>> This is to avoid having clusters of data in your general position
 >> since the GPS data isn't 100% accurate.
 
 If there is a successful update to the `current_position` the following
@@ -107,17 +107,17 @@ actions will be dispatch:
 ### Saving Recorded Positions to User Settings State
 
 After the user disables `is_tracking` the user should be followed up
-with a `USER_SETTINGS_SAVE_DATA_REQUEST`. Upon this request action the
+with a `USER_SETTINGS_SAVE_DATA_REQUEST`. Upon this REQUEST action the
 follwoing actions could be dispatched:
     - `USER_SETTINGS_SAVE_DATA_SUCCESS`
     - `USER_SETTINGS_SAVE_DATA_DENY`
     - `USER_SETTINGS_SAVE_DATA_FAIL`
 
-> The deny action happens if and only if there is not enough positions
+> The DENY action happens if and only if there is not enough positions
 > in recorded positions state. This is to avoid any crashes that could
 > happen with turf creating a Polygon feature.
 
-If the request triggers the SUCCESS action the following actions will
+If the REQUEST triggers the SUCCESS action the following actions will
 be dispatched:
     - `RECORDED_POSITION_CLEAR_DATA_SUCCESS`
     - `RECORDED_POSITION_CLEAR_DATA_FAIL`
@@ -125,7 +125,7 @@ be dispatched:
 > The purpose is to clear the recorded positions in the case that we
 > want to record a new set of positions.
 
-If the request triggers the DENY action the following actions will be
+If the REQUEST triggers the DENY action the following actions will be
 dispatched:
     - `RECORDED_POSITION_CLEAR_DATA_SUCCESS`
     - `RECORDED_POSITION_CLEAR_DATA_FAIL`
@@ -133,3 +133,37 @@ dispatched:
 > If there was a lack of positions in the Recorded Positions state then
 > the positions should be cleared if the user wants to reattempt to
 > record the positions again.
+
+## RECORDED POSITIONS
+
+`error` Used to define any error that happened during action events
+
+`data` Used to store latitude and longitude variables as an array.
+> E.g. [[lng0, lat0], [lng1, lat1], ..., [lngn, latn]]
+
+### Update Request
+
+The REQUEST will be dispatched when
+`USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS` is triggered by the saga.
+On `RECORDED_POSITION_UPDATE_REQUEST` the saga will dispatch the
+following:
+    - `RECORDED_POSITION_UPDATE_SUCCESS`
+    - `RECORDED_POSITION_UPDATE_FAIL`
+
+> There is no DENY action because this should be handled during the
+> action `USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST`
+
+### Clear Data Request
+
+The REQUEST will be dispatched by either
+`USER_SETTINGS_SAVE_DATA_SUCCESS` or by a custom made trigger button
+to dispatch it. The `RECORDED_POSITION_CLEAR_DATA_REQUEST` will 
+either trigger the following actions:
+    - `RECORDED_POSITION_CLEAR_DATA_SUCCESS`
+    - `RECORDED_POSITION_CLEAR_DATA_FAIL`
+    - `USER_DATA_SAVE_DATA_REQUEST`
+
+> We have `USER_DATA_SAVE_DATA_REQUEST` in case the user wants to
+> save the data as a feature to the User Settings state.
+>> After a `USER_DATA_SAVE_DATA_SUCCESS` or `USER_DATA_SAVE_DATA_DENY`
+>> this REQUEST will be triggered again.

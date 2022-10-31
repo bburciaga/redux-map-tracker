@@ -6,13 +6,11 @@ import {
 } from "../actions";
 
 class RecordedPositionState {
-  initialized: boolean;
   error: any;
 
   data: any[];
 
   constructor() {
-    this.initialized = false;
     this.error = null;
 
     this.data = [];
