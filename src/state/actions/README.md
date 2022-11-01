@@ -170,8 +170,8 @@ following:
 ### Clear Data Request
 
 The REQUEST will be dispatched by either
-`USER_SETTINGS_SAVE_DATA_SUCCESS` or by a custom made trigger button
-to dispatch it. The `RECORDED_POSITION_CLEAR_DATA_REQUEST` will 
+`USER_SETTINGS_SAVE_DATA_SUCCESS` saga or by a custom made trigger button
+to dispatch it. The `RECORDED_POSITION_CLEAR_DATA_REQUEST` saga will 
 either trigger the following actions:
 
     - RECORDED_POSITION_CLEAR_DATA_SUCCESS
