@@ -22,15 +22,6 @@ export default function RecordedPosition() {
     return is_tracking && watch_id !== null;
   }
 
-  useEffect(() => {
-    if (data.length >= 2) {
-      setPolyline(lineString(data));
-    }
-    if (data.length <= 1) {
-      setPolyline(null);
-    }
-  }, [data]);
-
   const findMe = async () => {
     try {
       let i: number = 0;
@@ -61,11 +52,21 @@ export default function RecordedPosition() {
     }
   };
 
-  useTimeout(() => {
-    if (isTracking() || show_position) {
+  const { reset } = useTimeout(() => {
+    if (isTracking() || show_position)
       findMe();
-    }
+    reset();
   }, 2000);
+
+
+  useEffect(() => {
+    if (data.length >= 2) {
+      setPolyline(lineString(data));
+    }
+    if (data.length <= 1) {
+      setPolyline(null);
+    }
+  }, [data]);
 
   return (
     <>

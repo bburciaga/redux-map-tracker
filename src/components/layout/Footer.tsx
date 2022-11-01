@@ -8,7 +8,6 @@ import {
   USER_SETTINGS_ENABLE_PROOF_MAP,
 } from "../../state/actions";
 import { selectRecordedPosition } from "../../state/reducers/recordedPosition";
-import { Snackbar } from "@material-ui/core";
 
 export default function Footer() {
   const dispatch = useDispatch();
@@ -54,9 +53,6 @@ export default function Footer() {
           Arr len: {recordedPosition.data.length}
         </Typography>
       )}
-      <Snackbar 
-        open={userSettings.error !== null}
-        message={userSettings.error} />
     </div>
   );
 }
