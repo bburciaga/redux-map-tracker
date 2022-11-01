@@ -58,7 +58,6 @@ actions.
 
 The `watch_id` should be automatically updated through the userSettings
 Saga. The following saga handlers update the id:
-
     - handle_USER_SETTINGS_ENABLE_POSITION_TRACKING
     - handle_USER_SETTINGS_DISABLE_POSITION_TRACKING
     - handle_USER_SETTINGS_ENABLE_SHOW_POSITION
@@ -66,7 +65,6 @@ Saga. The following saga handlers update the id:
 
 If the user decides to enable `show_position` it will dispatch one of
 the follwing actions:
-
     - USER_SETTINGS_UPDATE_WATCH_ID
     - USER_SETTINGS_UPDATE_WATCH_ID_DENY
     - USER_SETTINGS_UPDATE_WATCH_ID_FAIL
@@ -78,7 +76,6 @@ the follwing actions:
 
 If the user decides to disable `show_position` it will dispatch one of
 the following actions:
-
     - USER_SETTINGS_REMOVE_WATCH_ID
     - USER_SETTINGS_UPDATE_WATCH_ID_DENY
     - USER_SETTINGS_UPDATE_WATCH_ID_FAIL
@@ -94,7 +91,6 @@ If there is a `watch_id` and `is_tracking` or `show_position` are true
 then the findMe() function will dispatch a
 `USER_SETTINGS_UPDATE_CURRENT_POSITION_REQUEST`. The following actions
 can be dispatched:
-
     - USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS
     - USER_SETTINGS_UPDATE_CURRENT_POSITION_DENY
     - USER_SETTINGS_UPDATE_CURRENT_POSITION_FAIL
@@ -107,7 +103,6 @@ can be dispatched:
 
 If there is a successful update to the `current_position` the following
 actions will be dispatch:
-
     - RECORDED_POSITION_UPDATE_REQUEST
     - RECORDED_POSITION_UPDATE_FAIL
 
@@ -119,7 +114,6 @@ actions will be dispatch:
 After the user disables `is_tracking` the user should be followed up
 with a `USER_SETTINGS_SAVE_DATA_REQUEST`. Upon this REQUEST action the
 follwoing actions could be dispatched:
-
     - USER_SETTINGS_SAVE_DATA_SUCCESS
     - USER_SETTINGS_SAVE_DATA_DENY
     - USER_SETTINGS_SAVE_DATA_FAIL
@@ -130,7 +124,6 @@ follwoing actions could be dispatched:
 
 If the REQUEST triggers the SUCCESS action the following actions will
 be dispatched:
-
     - RECORDED_POSITION_CLEAR_DATA_SUCCESS
     - RECORDED_POSITION_CLEAR_DATA_FAIL
 
@@ -139,7 +132,6 @@ be dispatched:
 
 If the REQUEST triggers the DENY action the following actions will be
 dispatched:
- 
     - RECORDED_POSITION_CLEAR_DATA_SUCCESS
     - RECORDED_POSITION_CLEAR_DATA_FAIL
 
@@ -160,7 +152,6 @@ The REQUEST will be dispatched when
 `USER_SETTINGS_UPDATE_CURRENT_POSITION_SUCCESS` is triggered by the saga.
 On `RECORDED_POSITION_UPDATE_REQUEST` the saga will dispatch the
 following:
-
     - RECORDED_POSITION_UPDATE_SUCCESS
     - RECORDED_POSITION_UPDATE_FAIL
 
@@ -173,7 +164,6 @@ The REQUEST will be dispatched by either
 `USER_SETTINGS_SAVE_DATA_SUCCESS` or by a custom made trigger button
 to dispatch it. The `RECORDED_POSITION_CLEAR_DATA_REQUEST` will 
 either trigger the following actions:
-
     - RECORDED_POSITION_CLEAR_DATA_SUCCESS
     - RECORDED_POSITION_CLEAR_DATA_FAIL
     - USER_DATA_SAVE_DATA_REQUEST
